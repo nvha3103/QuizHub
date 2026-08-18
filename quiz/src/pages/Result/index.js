@@ -13,16 +13,17 @@ export default function Result() {
     const navigate = useNavigate()
     useEffect(() => {
         const fetchApi = async () => {
+            console.log("Đã chạy vào đây result")
             const dataAnswers = await getAnswer(params.id);
-            const dataQuestions = await getListQuestion(dataAnswers.topicId);
-            console.log("dataanswer :", dataAnswers.answers)
-            console.log(dataQuestions)
+            const dataQuestions = await getListQuestion(dataAnswers.data.testId);
+            console.log("dataanswer :", dataAnswers.data.answers)
+            console.log("dataQuestions :", dataQuestions.data)
 
             let resultFinal = [];
-            for (let i = 0; i < dataQuestions.length; i++) {
+            for (let i = 0; i < dataQuestions.data.length; i++) {
                 resultFinal.push({
-                    ...dataQuestions[i],
-                    ...dataAnswers.answers.find(item => item.questionId === dataQuestions[i].id)
+                    ...dataQuestions.data[i],
+                    ...dataAnswers.data.answers.find(item => item.questionId === dataQuestions.data[i]._id)
                 });
             }
             console.log("resultFinal", resultFinal);

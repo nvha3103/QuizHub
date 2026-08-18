@@ -55,3 +55,77 @@
         }
     }
 }
+
+/* =========================================
+   ĐỒNG HỒ ĐẾM NGƯỢC (TIMER)
+========================================= */
+.quiz-timer {
+    position: sticky;
+    top: 20px; /* Ghim đồng hồ cách mép trên màn hình 20px khi cuộn trang */
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    background: #ffffff;
+    padding: 12px 30px;
+    border-radius: 50px; /* Bo tròn hoàn toàn 2 đầu */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    width: max-content;
+    margin: 0 auto 30px auto; /* Căn giữa màn hình */
+    border: 2px solid #e2e8f0;
+    transition: all 0.3s ease;
+
+    .icon {
+        font-size: 1.5rem;
+    }
+
+    .time-info {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        line-height: 1.2;
+
+        .label {
+            font-size: 0.75rem;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 700;
+        }
+
+        .time {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #0f172a;
+            /* Giúp các con số nhảy mượt mà không bị giật lùi (Monospaced numbers) */
+            font-variant-numeric: tabular-nums; 
+        }
+    }
+
+    /* Hiệu ứng cảnh báo khi sắp hết giờ (< 60s) */
+    &.warning {
+        border-color: #ef4444;
+        background: #fef2f2;
+        /* Gọi hiệu ứng nhịp đập bên dưới */
+        animation: pulse-danger 1s infinite alternate;
+
+        .label {
+            color: #b91c1c;
+        }
+
+        .time {
+            color: #ef4444;
+        }
+    }
+}
+
+/* Hiệu ứng nhịp đập tim cho cảnh báo đỏ */
+@keyframes pulse-danger {
+    0% {
+        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
+    }
+    100% {
+        box-shadow: 0 0 0 15px rgba(239, 68, 68, 0);
+    }
+}

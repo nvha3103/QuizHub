@@ -4,13 +4,18 @@ import { Link } from "react-router-dom"
 import "./index.css"
 
 export default function Topic() {
-
     const [topics, setTopics] = useState([])
 
     useEffect(() => {
         const fetchApi = async () => {
             const response = await getListTopic()
-            setTopics(response);
+            console.log("response: ", response.data)
+            if (response.data) {
+                console.log("topíc: ", response.data)
+                setTopics(response.data);
+            } else {
+                setTopics([])
+            }
         }
 
         fetchApi();
@@ -18,23 +23,24 @@ export default function Topic() {
 
     return (
         <>
-            <h2>Danh sach chu de</h2>
+            <h2>Danh sách chủ đề</h2>
+
             {topics.length > 0 && (
                 <table className="tbl">
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Ten chu de</th>
+                            <th>STT</th>
+                            <th>Ten chủ đề</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                        {topics.map(item => (
+                        {topics.map((item, index) => (
                             <tr key={item.id}>
-                                <td>{item.id}</td>
+                                <td>{index + 1}</td>
                                 <td>{item.name}</td>
                                 <td>
-                                    <Link to={"/quiz/" + item.id}>Lam bai</Link>
+                                    <Link to={`/test/${item._id}`}>Danh sách đề</Link>
                                 </td>
                             </tr>
                         ))}
@@ -42,7 +48,6 @@ export default function Topic() {
                     </tbody>
                 </table>
             )}
-
         </>
     )
 }

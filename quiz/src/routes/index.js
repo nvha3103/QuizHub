@@ -9,6 +9,7 @@ import Topic from "../pages/Topic"
 import Result from "../pages/Result"
 import LayoutDefault from "../layout/LayoutDefault"
 import Logout from "../pages/Logout"
+import Test from "../pages/Test"
 export const routes = [
     {
         path: "/",
@@ -38,6 +39,10 @@ export const routes = [
                     {
                         path: "answers",
                         element: <Answers />
+                    },
+                    {
+                        path: "test/:id",
+                        element: <Test />
                     },
                     {
                         path: "quiz/:id",

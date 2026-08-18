@@ -7,7 +7,7 @@ export const getAnswersByUserId = async () => {
     return result;
 }
 
-export const getAnswer = async (id) => {
-    const result = await get(`answers/${id}`);
+export const getAnswer = async (answerId) => {
+    const result = await get(`answers/${answerId}`);
     return result;
 }

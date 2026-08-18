@@ -1,16 +1,26 @@
 import "./LayoutDefault.scss"
 import { NavLink, Outlet } from "react-router-dom";
 import { getCookie } from "../../helper/cookie"
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
+import { checkLogin } from "../../actions/login"
 
 export default function LayoutDefault() {
     const isLogin = useSelector(state => state.loginReducer);
 
-    const [token, setToken] = useState(getCookie("token"));
+    const [token, setToken] = useState(localStorage.getItem("token"));
+
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        const currentToken = getCookie("token");
+        const token = localStorage.getItem("token");
+        if (token) {
+            dispatch(checkLogin(true));
+        }
+    }, [dispatch]);
+
+    useEffect(() => {
+        const currentToken = localStorage.getItem("token");
         setToken(currentToken);
     }, [isLogin]);
 

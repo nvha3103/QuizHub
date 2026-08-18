@@ -14,7 +14,8 @@ export default function Register() {
 
         const checkExitEmail = await checkExits("email", email)
 
-        if (checkExitEmail.length > 0) {
+        // console.log(checkExitEmail)
+        if (checkExitEmail.code == 200) {
             alert("Email da ton tai!")
         } else {
             const options = {
