@@ -15,6 +15,7 @@ export default function Login() {
         const password = e.target[1].value;
         const response = await login(email, password);
         if (response.code == 200) {
+            localStorage.setItem("userId", response.userId);
             localStorage.setItem("token", response.token);
             dispatch(checkLogin(true))
             navigate("/")

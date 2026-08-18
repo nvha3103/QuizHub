@@ -2,8 +2,18 @@ import { getCookie } from "../../helper/cookie"
 import "./index.css"
 import { useSelector } from "react-redux";
 import { NavLink, Outlet } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { getListTopic } from "../../services/topicService";
 export default function Home() {
     const isLogin = useSelector(state => state.loginReducer);
+    const [topics, setTopics] = useState([]);
+    useEffect(() => {
+        const listTopics = async () => {
+            const topics = await getListTopic();
+            setTopics(topics.data);
+        }
+        listTopics();
+    }, [])
     return (
         <>
             {isLogin ? (<>
@@ -23,26 +33,14 @@ export default function Home() {
                     <section className="home-dashboard__topics">
                         <h2>Luyện tập theo môn học</h2>
                         <div className="topic-grid">
-                            <div className="topic-card topic-card--bio">
-                                <div className="topic-card__icon">🧬</div>
-                                <h3>Sinh học</h3>
-                                <p>Khám phá thế giới tự nhiên và di truyền.</p>
-                                <NavLink to="/topic" className="btn-go">Luyện tập ngay</NavLink>
-                            </div>
-
-                            <div className="topic-card topic-card--hist">
-                                <div className="topic-card__icon">📜</div>
-                                <h3>Lịch sử</h3>
-                                <p>Ngược dòng thời gian tìm hiểu các sự kiện trọng đại.</p>
-                                <NavLink to="/topic" className="btn-go">Luyện tập ngay</NavLink>
-                            </div>
-
-                            <div className="topic-card topic-card--geo">
-                                <div className="topic-card__icon">🌍</div>
-                                <h3>Địa lý</h3>
-                                <p>Tìm hiểu về bản đồ, khí hậu và tài nguyên.</p>
-                                <NavLink to="/topic" className="btn-go">Luyện tập ngay</NavLink>
-                            </div>
+                            {topics.map((topic, index) => (
+                                <div className="topic-card topic-card--bio" key={index}>
+                                    <div className="topic-card__icon"><img src={topic.image} alt={topic.name} /></div>
+                                    <h3>{topic.name}</h3>
+                                    <p>{topic.description}</p>
+                                    <NavLink to={`/test/${topic._id}`} className="btn-go">Luyện tập ngay</NavLink>
+                                </div>
+                            ))}
                         </div>
                     </section>
 

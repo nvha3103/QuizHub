@@ -5,6 +5,7 @@ const topicSchema = new mongoose.Schema(
         name: String,
         image: String,
         listTests: Array,
+        description: String,
         status: {
             type: String,
             default: "active"

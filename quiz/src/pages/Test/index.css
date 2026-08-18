@@ -9,6 +9,7 @@
 
 /* Từng khối bài thi (Card) */
 .box-test {
+  box-sizing: border-box;
   background: #ffffff;
   border-radius: 16px;
   padding: 24px;

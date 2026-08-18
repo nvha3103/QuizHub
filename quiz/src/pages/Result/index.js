@@ -3,6 +3,7 @@ import { useState, useEffect } from "react"
 import { getAnswer } from "../../services/answersService"
 import { getListQuestion } from "../../services/questionsService"
 import { useNavigate } from "react-router-dom";
+import { createRecord } from "../../services/recordService";
 import "./Result.scss"
 
 export default function Result() {
@@ -33,6 +34,17 @@ export default function Result() {
                     correctAnswer += 1
                 }
             }
+
+            const options = {
+                userId: dataAnswers.data.userId,
+                testId: dataAnswers.data.testId,
+                answerId: params.id,
+                score: Math.round(correctAnswer / resultFinal.length * 10),
+                time: dataAnswers.data.time,
+            }
+            const resultRecord = await createRecord(options);
+            console.log("resultRecord :", resultRecord.data);
+
             setTrueAns(correctAnswer);
             setTotalQues(resultFinal.length)
             setDataResult(resultFinal)

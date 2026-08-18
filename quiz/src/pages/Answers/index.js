@@ -1,33 +1,49 @@
 import { useState, useEffect } from "react"
 import { getAnswersByUserId } from "../../services/answersService"
-import { getListTopic } from "../../services/topicService"
+import { getTopic } from "../../services/topicService"
 import { getCookie } from "../../helper/cookie"
 import { useParams } from "react-router-dom"
 import { Link } from "react-router-dom"
+import { getRecords } from "../../services/recordService"
+import { getTest } from "../../services/testService"
 import "./index.css"
+
 export default function Answer() {
-    const [dataAnswer, setDataAnswer] = useState([]);
+    const [records, setRecords] = useState([]);
     const params = useParams();
+    const userId = localStorage.getItem("userId")
     useEffect(() => {
+        console.log("userId", userId);
+
         const fetchApi = async () => {
-            const answerByUserId = await getAnswersByUserId(params.id);
-            const topics = await getListTopic();
+            const result = await getRecords(userId);
+            console.log("records", result);
 
-            let result = [];
+            if (result && result.data) {
 
-            for (let i = 0; i < answerByUserId.length; i++) {
-                result.push({
-                    ...topics.find(item => String(item.id) == String(answerByUserId[i].topicId)),
-                    ...answerByUserId[i]
-                })
+                const finalRecords = await Promise.all(
+                    result.data.map(async (item) => {
+                        const test = await getTest(item.testId);
+                        const topicId = test.data.topicId;
+                        const topic = await getTopic(topicId);
+
+                        // Trả về object mới đã được gộp thêm testName và topicName
+                        return {
+                            ...item,
+                            testName: test.data.name,
+                            topicName: topic.data[0]?.name || topic.data.name
+                        };
+                    })
+                );
+
+                console.log("newRecords", finalRecords);
+                setRecords(finalRecords);
             }
-            console.log(result)
-            setDataAnswer(result.reverse())
         }
         fetchApi();
     }, [])
 
-    console.log(dataAnswer)
+
 
     return (
         <>
@@ -37,18 +53,23 @@ export default function Answer() {
             <table className="tbl">
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Ten chu de</th>
-                        <th></th>
+                        <th>STT</th>
+                        <th>Tên chủ đề</th>
+                        <th>Tên Test</th>
+                        <th>Điểm số</th>
+                        <th>Hành động</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {dataAnswer.map(item => (
+                    {records.map((item, index) => (
                         <tr key={item.id}>
-                            <td>{item.id}</td>
-                            <td>{item.name}</td>
+                            <td>{index + 1}</td>
+
+                            <td>{item.topicName}</td>
+                            <td>{item.testName}</td>
+                            <td>{item.score}</td>
                             <td>
-                                <Link to={"/result/" + item.id}>Xem chi tiet</Link>
+                                <Link to={"/result/" + item.answerId}>Xem chi tiet</Link>
                             </td>
                         </tr>
                     ))}

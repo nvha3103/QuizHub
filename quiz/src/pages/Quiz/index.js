@@ -26,6 +26,7 @@ export default function Quiz() {
         if (timeLeft === null) return;
         if (timeLeft <= 0) {
             handleSubmit();
+            return;
         }
         const timerId = setInterval(() => {
             setTimeLeft(prevTime => prevTime - 1)
@@ -51,19 +52,24 @@ export default function Quiz() {
     }, [params.id])
 
 
-    const handleSubmit = async () => {
-
+    const handleSubmit = async (e) => {
+        if (e) {
+            e.preventDefault();
+        }
+        console.log("Đã submit thành công")
         // console.log("selectedAnswer: ", selectedAnswers)
         let options = {
-            userId: localStorage.getItem("token"),
+            userId: localStorage.getItem("userId"),
             testId: params.id,
-            answers: selectedAnswers
+            answers: selectedAnswers,
+
         }
 
         const response = await createAnswer(options);
-        // console.log("resonse data la: ", response.data)
+        console.log("resonse data la: ", response.data)
         if (response.data) {
             navigate(`/result/${response.data._id}`)
+
         }
     }
 
@@ -96,7 +102,7 @@ export default function Quiz() {
     return (
         <>
             <h2>Bài thi: {dataTopic && (<>{dataTopic.name}</>)}</h2>
-            
+
             <div className={`quiz-timer ${timeLeft !== null && timeLeft <= 60 ? 'warning' : ''}`}>
                 <span className="icon">⏳</span>
                 <div className="time-info">

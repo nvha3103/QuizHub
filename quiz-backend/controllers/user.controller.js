@@ -60,7 +60,8 @@ module.exports.loginPost = async (req, res) => {
             return;
         }
         res.cookie("token", user.token)
-        res.json({ code: 200, message: "Đăng nhập thành công", token: user.token })
+        res.cookie("userId", user._id)
+        res.json({ code: 200, message: "Đăng nhập thành công", token: user.token, userId: user._id })
     } catch (error) {
         res.json({ code: 500, message: "Lỗi hệ thống" })
     }
