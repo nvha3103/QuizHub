@@ -6,7 +6,12 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const app = express();
 const port = process.env.PORT || 3000;
-database.connect();
+
+// Đảm bảo DB luôn được kết nối trước khi xử lý API (Rất quan trọng cho Vercel)
+app.use(async (req, res, next) => {
+    await database.connect();
+    next();
+});
 
 const routes = require("./routes/index.route");
 

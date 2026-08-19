@@ -59,6 +59,7 @@ export default function Result() {
     return (
         <>
             <h1>Ket qua: {trueAns} / {totalQues}</h1>
+            <h3>[{dataResult}]</h3>
             <div className="result__list"></div>
             {dataResult.map((item, index) => (
                 <div className="result__item" key={item.id}>
