@@ -5,6 +5,7 @@ import "./index.css"
 
 export default function Topic() {
     const [topics, setTopics] = useState([])
+    const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
         const fetchApi = async () => {
@@ -16,6 +17,7 @@ export default function Topic() {
             } else {
                 setTopics([])
             }
+            setIsLoading(false); // Gọi API xong thì tắt loading
         }
 
         fetchApi();
@@ -25,7 +27,10 @@ export default function Topic() {
         <>
             <h2>Danh sách chủ đề</h2>
 
-            {topics.length > 0 && (
+            {isLoading ? (
+                <div className="loading-spinner"></div>
+            ) : (
+                topics.length > 0 && (
                 <table className="tbl">
                     <thead>
                         <tr>
@@ -47,6 +52,7 @@ export default function Topic() {
 
                     </tbody>
                 </table>
+                )
             )}
         </>
     )

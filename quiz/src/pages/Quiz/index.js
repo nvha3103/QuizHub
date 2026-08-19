@@ -13,6 +13,7 @@ export default function Quiz() {
     const [timeLeft, setTimeLeft] = useState(null)
     const navigate = useNavigate()
     const [selectedAnswers, setSelectedAnswers] = useState([])
+    const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
         const fetchApi = async () => {
@@ -47,6 +48,7 @@ export default function Quiz() {
             const response = await getListQuestion(params.id);
             console.log("data question: ", response.data)
             setDataQuestion(response.data)
+            setIsLoading(false)
         }
         fetchApi();
     }, [params.id])
@@ -103,29 +105,35 @@ export default function Quiz() {
         <>
             <h2>Bài thi: {dataTopic && (<>{dataTopic.name}</>)}</h2>
 
-            <div className={`quiz-timer ${timeLeft !== null && timeLeft <= 60 ? 'warning' : ''}`}>
-                <span className="icon">⏳</span>
-                <div className="time-info">
-                    <span className="label">Thời gian còn lại</span>
-                    <strong className="time">{formatTime(timeLeft)}</strong>
-                </div>
-            </div>
-            <div className="form-quiz">
-                <form onSubmit={handleSubmit}>
-                    {dataQuestion.map((item, index) => (
-                        <div className="form-quiz__item" key={item.id}>
-                            <p>Cau {index + 1}: {item.question} </p>
-                            {item.answers.map((itemAns, indexAns) => (
-                                <div className="form-quiz__answer" key={indexAns}>
-                                    <input type="radio" name={item._id} value={indexAns} id={`quiz-${item._id}-${indexAns}`} onChange={handleChangeAnswer} />
-                                    <label htmlFor={`quiz-${item._id}-${indexAns}`}>{itemAns}</label>
+            {isLoading ? (
+                <div className="loading-spinner"></div>
+            ) : (
+                <>
+                    <div className={`quiz-timer ${timeLeft !== null && timeLeft <= 60 ? 'warning' : ''}`}>
+                        <span className="icon">⏳</span>
+                        <div className="time-info">
+                            <span className="label">Thời gian còn lại</span>
+                            <strong className="time">{formatTime(timeLeft)}</strong>
+                        </div>
+                    </div>
+                    <div className="form-quiz">
+                        <form onSubmit={handleSubmit}>
+                            {dataQuestion.map((item, index) => (
+                                <div className="form-quiz__item" key={item.id}>
+                                    <p>Cau {index + 1}: {item.question} </p>
+                                    {item.answers.map((itemAns, indexAns) => (
+                                        <div className="form-quiz__answer" key={indexAns}>
+                                            <input type="radio" name={item._id} value={indexAns} id={`quiz-${item._id}-${indexAns}`} onChange={handleChangeAnswer} />
+                                            <label htmlFor={`quiz-${item._id}-${indexAns}`}>{itemAns}</label>
+                                        </div>
+                                    ))}
                                 </div>
                             ))}
-                        </div>
-                    ))}
-                    <button type="submit">Nộp bài</button>
-                </form>
-            </div>
+                            <button type="submit">Nộp bài</button>
+                        </form>
+                    </div>
+                </>
+            )}
         </>
     )
 }

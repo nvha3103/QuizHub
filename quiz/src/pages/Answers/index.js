@@ -10,35 +10,15 @@ import "./index.css"
 
 export default function Answer() {
     const [records, setRecords] = useState([]);
-    const params = useParams();
-    const userId = localStorage.getItem("userId")
+    const [isLoading, setIsLoading] = useState(true);
+
+
     useEffect(() => {
-        console.log("userId", userId);
-
         const fetchApi = async () => {
-            const result = await getRecords(userId);
-            console.log("records", result);
-
-            if (result && result.data) {
-
-                const finalRecords = await Promise.all(
-                    result.data.map(async (item) => {
-                        const test = await getTest(item.testId);
-                        const topicId = test.data.topicId;
-                        const topic = await getTopic(topicId);
-
-                        // Trả về object mới đã được gộp thêm testName và topicName
-                        return {
-                            ...item,
-                            testName: test.data.name,
-                            topicName: topic.data[0]?.name || topic.data.name
-                        };
-                    })
-                );
-
-                console.log("newRecords", finalRecords);
-                setRecords(finalRecords);
-            }
+            const userId = localStorage.getItem("userId");
+            const result = await getRecords(userId)
+            setRecords(result.data);
+            setIsLoading(false);
         }
         fetchApi();
     }, [])
@@ -49,9 +29,12 @@ export default function Answer() {
         <>
             <h2>Danh sach bai da luyen tap</h2>
 
-            {/* {dataAnswer.length > 0 && ( */}
-            <table className="tbl">
-                <thead>
+            {isLoading ? (
+                <div className="loading-spinner"></div>
+            ) : (
+                records.length > 0 && (
+                <table className="tbl">
+                    <thead>
                     <tr>
                         <th>STT</th>
                         <th>Tên chủ đề</th>
@@ -76,7 +59,8 @@ export default function Answer() {
 
                 </tbody>
             </table>
-            {/* )} */}
+                )
+            )}
         </>
     )
 }

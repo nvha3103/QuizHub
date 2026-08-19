@@ -8,11 +8,14 @@ export default function Test() {
     const params = useParams();
     const [topic, setTopic] = useState('')
     const [tests, setTests] = useState([])
+    const [isLoading, setIsLoading] = useState(true)
+    
     useEffect(() => {
         const fetchApi = async () => {
             const response = await getListTest(params.id);
             console.log("list tests: ", response.data)
             setTests(response.data)
+            setIsLoading(false);
         }
         const topicRender = async () => {
             const res = await getTopic(params.id)
@@ -24,19 +27,23 @@ export default function Test() {
     return (
         <>
             <h2>Các bài test cho chủ đề {topic} </h2>
-            <div className="list-test">
-                {tests.map((test, index) => (
-                    <div key={index} className="box-test">
-                        <h4>{test.name}</h4>
-                        <p>{test.description}</p>
-                        <button>
-                            <Link to={`/quiz/${test._id}`}>
-                                Thi ngay
-                            </Link>
-                        </button>
-                    </div>
-                ))}
-            </div>
+            {isLoading ? (
+                <div className="loading-spinner"></div>
+            ) : (
+                <div className="list-test">
+                    {tests.map((test, index) => (
+                        <div key={index} className="box-test">
+                            <h4>{test.name}</h4>
+                            <p>{test.description}</p>
+                            <button>
+                                <Link to={`/quiz/${test._id}`}>
+                                    Thi ngay
+                                </Link>
+                            </button>
+                        </div>
+                    ))}
+                </div>
+            )}
         </>
     )
 }
