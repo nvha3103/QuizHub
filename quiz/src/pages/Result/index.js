@@ -59,13 +59,13 @@ export default function Result() {
     return (
         <>
             <h1>Ket qua: {trueAns} / {totalQues}</h1>
-            <h3>[{dataResult}]</h3>
+
             <div className="result__list"></div>
             {dataResult.map((item, index) => (
                 <div className="result__item" key={item.id}>
 
                     <p>Cau {index + 1}: {item.question}
-                        {item.correctAnswer === item.answer ? (
+                        {String(item.correctAnswer) === String(item.answer) ? (
                             <span className="result__tag result__tag--true">Đúng</span>
                         ) : (
                             <span className="result__tag result__tag--false">Sai</span>
