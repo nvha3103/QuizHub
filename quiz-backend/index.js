@@ -1,5 +1,7 @@
-const express = require("express");
 require("dotenv").config({ override: true });
+
+
+const express = require("express");
 const database = require("./config/database");
 const bodyParser = require("body-parser");
 const cors = require("cors");

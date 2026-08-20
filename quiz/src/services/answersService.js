@@ -1,4 +1,4 @@
-import { get } from "../utils/request"
+import { get, post } from "../utils/request"
 import { getCookie } from "../helper/cookie"
 
 export const getAnswersByUserId = async () => {
@@ -9,5 +9,10 @@ export const getAnswersByUserId = async () => {
 
 export const getAnswer = async (answerId) => {
     const result = await get(`answers/${answerId}`);
+    return result;
+}
+
+export const explainAnswer = async (options) => {
+    const result = await post(`ai/explain`, options);
     return result;
 }

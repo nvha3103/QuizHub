@@ -1,4 +1,5 @@
 const API_DOMAIN = "https://quiz-hub-rbpr.vercel.app/"
+
 const getToken = () => {
     const token = localStorage.getItem("token")
     return token ? `Bearer ${token}` : ""
