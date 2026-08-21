@@ -17,6 +17,7 @@ export default function Login() {
         if (response.code == 200) {
             localStorage.setItem("userId", response.userId);
             localStorage.setItem("token", response.token);
+            if (response.role) localStorage.setItem("role", response.role);
             dispatch(checkLogin(true))
             navigate("/")
         } else {

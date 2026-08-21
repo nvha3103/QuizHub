@@ -10,6 +10,7 @@ import Result from "../pages/Result"
 import LayoutDefault from "../layout/LayoutDefault"
 import Logout from "../pages/Logout"
 import Test from "../pages/Test"
+import AIGenerateQuestion from "../pages/AIGenerateQuestion";
 export const routes = [
     {
         path: "/",
@@ -36,6 +37,10 @@ export const routes = [
 
                 element: <PrivateRoutes />,
                 children: [
+                    {
+                        path: "ai-generate-question",
+                        element: <AIGenerateQuestion />
+                    },
                     {
                         path: "answers",
                         element: <Answers />

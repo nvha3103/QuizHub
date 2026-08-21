@@ -14,6 +14,8 @@ export default function Home() {
         }
         listTopics();
     }, [])
+    const role = localStorage.getItem("role");
+    
     return (
         <>
             {isLogin ? (<>
@@ -21,6 +23,9 @@ export default function Home() {
                     <section className="home-dashboard__welcome">
                         <h1>Chào mừng trở lại, {getCookie("fullName") || "Sĩ tử"}! 👋</h1>
                         <p>Hôm nay bạn muốn chinh phục môn học nào?</p>
+                        {role === 'admin' && (
+                            <NavLink to="/ai-generate-question" className="btn btn--primary" style={{marginTop: '15px', display: 'inline-block', backgroundColor: '#8e44ad'}}>✨ Tạo câu hỏi với AI (Admin)</NavLink>
+                        )}
                     </section>
 
 

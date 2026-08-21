@@ -9,6 +9,9 @@ export default function Logout() {
 
 
     deleteAllCookies();
+    localStorage.removeItem("userId");
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
 
     useEffect(() => {
         dispatch(checkLogin(false))

@@ -12,6 +12,11 @@ const userSchema = new mongoose.Schema(
         },
         phone: String,
         avatar: String,
+        role: {
+            type: String,
+            enum: ["admin", "student"],
+            default: "student"
+        },
         status: {
             type: String,
             default: "active"

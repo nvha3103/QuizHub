@@ -22,3 +22,14 @@ module.exports.requireAuth = async (req, res, next) => {
 
     // console.log(req.headers.authorization)
 }
+
+module.exports.requireAdmin = async (req, res, next) => {
+    if (req.user.role !== "admin") {
+        res.json({
+            code: 403,
+            message: "Bạn không có quyền truy cập"
+        })
+        return;
+    }
+    next();
+}
